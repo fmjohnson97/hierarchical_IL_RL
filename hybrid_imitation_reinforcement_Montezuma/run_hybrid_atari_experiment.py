@@ -130,10 +130,10 @@ def main():
         print("\n\n### STEPS "  + str(stepCount) + "###")
         #print("Current controller epsilon for goal is", agent.controllerEpsilon[3])
         for subgoal in range(4):
-            print "Current epsilon for subgoal ", str(subgoal), " is:", agent_list[subgoal].controllerEpsilon
+            print("Current epsilon for subgoal ", str(subgoal), " is:", agent_list[subgoal].controllerEpsilon)
         print
         for subgoal in range(4):
-            print "Number of samples for subgoal ", str(subgoal), " is:", option_t[subgoal]
+            print("Number of samples for subgoal ", str(subgoal), " is:", option_t[subgoal])
         print
         # Restart the game
         #sleep(2)
@@ -157,12 +157,12 @@ def main():
         
         if goal!= true_goal:
             wrong_option = True
-            print "Terminate because picking wrong option at goal", true_goal
+            print("Terminate because picking wrong option at goal", true_goal)
             wrong_meta_pred += 1
-            print "Number of wrong meta choices: ", wrong_meta_pred
+            print("Number of wrong meta choices: ", wrong_meta_pred)
             if wrong_meta_pred % 100 == 0:
                 metacontroller.reset()
-                print "Resetting the meta controller"
+                print("Resetting the meta controller")
                 #sleep(2)
 
 
@@ -205,13 +205,13 @@ def main():
                             agent_list[goal].store(exp)
                             option_t[goal] += 1
                             option_training_counter[goal] += 1
-                        print "Finally, the number of stuff in random_experience is", len(random_experience[goal])
-                        print "The number of item in experience memory so far is:", len(agent_list[goal].memory)
+                        print("Finally, the number of stuff in random_experience is", len(random_experience[goal]))
+                        print("The number of item in experience memory so far is:", len(agent_list[goal].memory))
                         random_experience[goal].clear()
                         assert len(random_experience[goal]) == 0
                         kickoff_lowlevel_training[goal] = True
-                        print "This should really be one time thing"
-                        print " number of option_t is ", option_t[goal]
+                        print("This should really be one time thing")
+                        print(" number of option_t is ", option_t[goal])
                         print 
                         #sleep(10)
                     else:
@@ -276,9 +276,9 @@ def main():
                 
                 if goal!= true_goal:
                     wrong_option = True
-                    print "Terminate because picking wrong option at goal", true_goal
+                    print("Terminate because picking wrong option at goal", true_goal)
                     wrong_meta_pred += 1
-                    print "Number of wrong meta choices: ", wrong_meta_pred
+                    print("Number of wrong meta choices: ", wrong_meta_pred)
                     if wrong_meta_pred % 100 == 0:
                         metacontroller.reset() ## Resetting the meta-controller and retrain. This is fine because we're doing DAgger at the top level
                     break
@@ -309,7 +309,7 @@ def main():
         meta_training_counter += 1
         
         if metacontroller.check_training_clock() and (meta_training_counter >= 20):
-            print "training metacontroller"
+            print("training metacontroller")
             meta_loss = metacontroller.train()
             meta_training_counter = 0 # reset counter
         
@@ -323,16 +323,16 @@ def main():
                         #hdqn_list[subgoal].saveWeight(subgoal)
                         #agent_list[subgoal].clear_memory(subgoal)
                         #hdqn_list[subgoal].clear_memory()
-                        print "Training completed after for subgoal", subgoal, "Model saved"
+                        print("Training completed after for subgoal", subgoal, "Model saved")
                         if subgoal == (nb_Option-1):
                             training_completed = True ## Stop training, all done
                     else:
-                        print "Subgoal ", subgoal, " should no longer be in training"
+                        print("Subgoal ", subgoal, " should no longer be in training")
                 elif subgoal_trailing_performance[subgoal] < STOP_TRAINING_THRESHOLD and option_learned[subgoal]:
-                    print "For some reason, the performance of subgoal ", subgoal, " dropped below the threshold again"
+                    print("For some reason, the performance of subgoal ", subgoal, " dropped below the threshold again")
             else:
                 subgoal_trailing_performance[subgoal] = 0.0
-            print "Trailing success ratio for "+str(subgoal)+" is:", subgoal_trailing_performance[subgoal]
+            print("Trailing success ratio for "+str(subgoal)+" is:", subgoal_trailing_performance[subgoal])
 
         record.append( (episodeCount, stepCount, option_t[0], subgoal_trailing_performance[0], option_t[1], subgoal_trailing_performance[1], option_t[2], subgoal_trailing_performance[2], option_t[3], subgoal_trailing_performance[3], meta_count, true_goal, metacontroller.meta_ind))
         if episodeCount % 100 == 0 or training_completed:
@@ -345,7 +345,7 @@ def main():
             for subgoal in range(4):
                 agent_list[subgoal].annealControllerEpsilon(option_t[subgoal], option_learned[subgoal])
     if not option_learned:
-    	print "Training terminated after ", stepCount, "steps taken. Option was not learned"
+    	print("Training terminated after ", stepCount, "steps taken. Option was not learned")
 
 if __name__ == "__main__":
     main()
